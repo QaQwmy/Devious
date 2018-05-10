@@ -1,0 +1,33 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="20">
+            <item index="0" class="java.lang.String" itemvalue="jieba" />
+            <item index="1" class="java.lang.String" itemvalue="Whoosh" />
+            <item index="2" class="java.lang.String" itemvalue="amqp" />
+            <item index="3" class="java.lang.String" itemvalue="python-alipay-sdk" />
+            <item index="4" class="java.lang.String" itemvalue="uWSGI" />
+            <item index="5" class="java.lang.String" itemvalue="kombu" />
+            <item index="6" class="java.lang.String" itemvalue="redis" />
+            <item index="7" class="java.lang.String" itemvalue="celery" />
+            <item index="8" class="java.lang.String" itemvalue="Django" />
+            <item index="9" class="java.lang.String" itemvalue="django-tinymce" />
+            <item index="10" class="java.lang.String" itemvalue="django-redis" />
+            <item index="11" class="java.lang.String" itemvalue="olefile" />
+            <item index="12" class="java.lang.String" itemvalue="pycryptodome" />
+            <item index="13" class="java.lang.String" itemvalue="PyMySQL" />
+            <item index="14" class="java.lang.String" itemvalue="pytz" />
+            <item index="15" class="java.lang.String" itemvalue="itsdangerous" />
+            <item index="16" class="java.lang.String" itemvalue="vine" />
+            <item index="17" class="java.lang.String" itemvalue="billiard" />
+            <item index="18" class="java.lang.String" itemvalue="django-haystack" />
+            <item index="19" class="java.lang.String" itemvalue="Pillow" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>

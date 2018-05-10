@@ -1,0 +1,743 @@
+1.指定路径创建虚拟环境 -p 路径
+-----------------------------------------
+
+mkvirtualenv -p C:\Users\zhang\AppData\Local\Programs\Python\Python36\python.exe testvir3
+
+2.按照mysql驱动
+-----------------------------
+https://www.lfd.uci.edu/~gohlke/pythonlibs/
+
+2.7版本 mysql-python
+3.6版本  mysqlclient
+
+
+3.django 1.9版本
+
+pip install  django==1.9
+
+4.python 创建项目 testvirt3
+
+5.配置我们mysql数据库
+-----------------------------
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'aggonline',
+        'USER':'root',
+        'PASSWORD':'root',
+        'HOST':'127.0.0.1'
+    }
+}
+
+创建模型集成原有的数据库
+----------------------------------
+ from django.contrib.auth.models import AbstractUser
+
+setting里面需要注册
+--------
+# UserProfile 覆盖了 django 内置的 user 表
+AUTH_USER_MODEL = 'users.UserProfile'
+
+按照pillow
+pip install Pillow -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+
+用户模块的实现步骤
+-----------------------------------
+1）startapp user
+2）user --model.py
+------------------------------
+ 继承原有的模板数据库
+from django.contrib.auth.models import AbstractUser
+#用户信息表
+class UserProfile(AbstractUser):
+    nick_name = models.CharField(max_length=50, verbose_name=u"昵称", default="")
+    birthday = models.DateField(verbose_name=u"生日", null=True, blank=True)
+    gender = models.CharField(max_length=6, choices=(("male", u"男"), ("female", "女")), default="female")
+    address = models.CharField(max_length=100, default=u"")
+    mobile = models.CharField(max_length=11, null=True, blank=True)
+    image = models.ImageField(upload_to="image/%Y/%m", default=u"image/default.png", max_length=100)
+
+    class Meta:
+        verbose_name = "用户信息"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.username
+
+3)setting.py
+--------------------
+1)注册模块
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'message',
+    'user'
+]
+
+2）AUTH_USER_MODEL = 'user.UserProfile'
+
+3）pip install Pillow -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+
+4）数据库同步
+
+
+user模块的总体代码
+-----------------------------------
+from django.db import models
+from django.contrib.auth.models import AbstractUser
+from datetime import datetime
+
+
+# Create your models here.
+
+
+class UserProfile(AbstractUser):
+    nick_name = models.CharField(max_length=50, verbose_name=u"昵称", default="")
+    birthday = models.DateField(verbose_name=u"生日", null=True, blank=True)
+    gender = models.CharField(max_length=6, choices=(("male", u"男"), ("female", "女")), default="female")
+    address = models.CharField(max_length=100, default=u"")
+    mobile = models.CharField(max_length=11, null=True, blank=True)
+    image = models.ImageField(upload_to="image/%Y/%m", default=u"image/default.png", max_length=100)
+
+    class Meta:
+        verbose_name = "用户信息"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.username
+
+#邮箱
+class EmailVerifyRecord(models.Model):
+    code = models.CharField(max_length=20, verbose_name=u"验证码")
+    email = models.EmailField(max_length=50, verbose_name=u"邮箱")
+    send_type = models.CharField(verbose_name=u"验证码类型",
+                                 choices=(("register", u"注册"), ("forget", u"找回密码"), ("update_email", u"修改邮箱")),
+                                 max_length=30)
+    send_time = models.DateTimeField(verbose_name=u"发送时间", default=datetime.now)
+
+    class Meta:
+        verbose_name = u"邮箱验证码"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return '{0}({1})'.format(self.code, self.email)
+
+#Banner图
+
+class Banner(models.Model):
+    title = models.CharField(max_length=100, verbose_name=u"标题")
+    image = models.ImageField(upload_to="banner/%Y/%m", verbose_name=u"轮播图", max_length=100)
+    url = models.URLField(max_length=200, verbose_name=u"访问地址")
+    index = models.IntegerField(default=100, verbose_name=u"顺序")
+    add_time = models.DateTimeField(default=datetime.now, verbose_name=u"添加时间")
+
+    class Meta:
+        verbose_name = u"轮播图"
+        verbose_name_plural = verbose_name
+
+
+
+课程模块
+--------------------------------------------------
+
+from datetime import datetime
+
+from django.db import models
+
+
+# Create your models here.
+
+"""
+课程信息
+"""
+
+
+class Course(models.Model):
+    name = models.CharField(max_length=50, verbose_name=u"课程名")
+    desc = models.CharField(max_length=300, verbose_name=u"课程描述")
+    detail = models.TextField(verbose_name=u"课程详情")
+    degree = models.CharField(verbose_name=u"难度", choices=(("cj", "初级"), ("zj", "中级"), ("gj", "高级")), max_length=2)
+    learn_times = models.IntegerField(default=0, verbose_name=u"学习时长(分钟数)")
+    students = models.IntegerField(default=0, verbose_name=u'学习人数')
+    fav_nums = models.IntegerField(default=0, verbose_name=u'收藏人数')
+    image = models.ImageField(upload_to="courses/%Y/%m", verbose_name=u"封面图", max_length=100)
+    click_nums = models.IntegerField(default=0, verbose_name=u"点击数")
+
+    add_time = models.DateTimeField(default=datetime.now, verbose_name=u"添加时间")
+
+    class Meta:
+        verbose_name = u"课程"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+
+"""
+章节名称
+"""
+
+
+class Lesson(models.Model):
+    course = models.ForeignKey(Course, verbose_name=u"课程")
+    name = models.CharField(max_length=100, verbose_name=u"章节名")
+    learn_times = models.IntegerField(default=0, verbose_name=u"学习时长(分钟数)")
+    add_time = models.DateTimeField(default=datetime.now, verbose_name=u"添加时间")
+
+    class Meta:
+        verbose_name = u"章节"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+"""
+视频
+"""
+
+
+class Video(models.Model):
+    lesson = models.ForeignKey(Lesson, verbose_name=u"章节")
+    name = models.CharField(max_length=100, verbose_name=u"视频名")
+    learn_times = models.IntegerField(default=0, verbose_name=u"学习时长(分钟数)")
+    url = models.CharField(max_length=200, default="", verbose_name=u"访问地址")
+    add_time = models.DateTimeField(default=datetime.now, verbose_name=u"添加时间")
+
+    class Meta:
+        verbose_name = u"视频"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+
+"""
+ 课程资源
+"""
+
+
+class CourseResource(models.Model):
+    course = models.ForeignKey(Course, verbose_name=u"课程")
+    name = models.CharField(max_length=100, verbose_name=u"名称")
+    download = models.FileField(upload_to="course/resource/%Y/%m", verbose_name=u"资源文件", max_length=100)
+    add_time = models.DateTimeField(default=datetime.now, verbose_name=u"添加时间")
+
+    class Meta:
+        verbose_name = u"课程资源"
+        verbose_name_plural = verbose_name
+
+
+2）添加到setting里面
+-------------------------------
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'message',
+    'user',
+    'course'
+]
+
+3）同步数据
+-----------------------------
+
+
+
+
+
+
+
+
+组织机构
+--------------------------------------------------
+# _*_ encoding:utf-8 _*_
+from __future__ import unicode_literals
+from datetime import datetime
+
+from django.db import models
+
+
+# Create your models here.
+
+
+class CityDict(models.Model):
+    name = models.CharField(max_length=20, verbose_name=u"城市")
+    desc = models.CharField(max_length=200, verbose_name=u"描述")
+    add_time = models.DateTimeField(default=datetime.now)
+
+    class Meta:
+        verbose_name = u"城市"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+
+class CourseOrg(models.Model):
+    name = models.CharField(max_length=50, verbose_name=u"机构名称")
+    desc = models.TextField(verbose_name=u"机构描述")
+    click_nums = models.IntegerField(default=0, verbose_name=u"点击数")
+    fav_nums = models.IntegerField(default=0, verbose_name=u"收藏数")
+    image = models.ImageField(upload_to="org/%Y/%m", verbose_name=u"logo", max_length=100)
+    address = models.CharField(max_length=150, verbose_name=u"机构地址")
+    city = models.ForeignKey(CityDict, verbose_name=u"所在城市")
+    add_time = models.DateTimeField(default=datetime.now)
+
+    class Meta:
+        verbose_name = u"课程机构"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+
+class Teacher(models.Model):
+    org = models.ForeignKey(CourseOrg, verbose_name=u"所属机构")
+    name = models.CharField(max_length=50, verbose_name=u"教师名")
+    work_years = models.IntegerField(default=0, verbose_name=u"工作年限")
+    work_company = models.CharField(max_length=50, verbose_name=u"就职公司")
+    work_position = models.CharField(max_length=50, verbose_name=u"公司职位")
+    points = models.CharField(max_length=50, verbose_name=u"教学特点")
+    click_nums = models.IntegerField(default=0, verbose_name=u"点击数")
+    fav_nums = models.IntegerField(default=0, verbose_name=u"收藏数")
+    add_time = models.DateTimeField(default=datetime.now)
+
+    class Meta:
+        verbose_name = u"教师"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+
+2）添加到setting里面
+-----------------------------------
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'message',
+    'user',
+    'course',
+    'organization'
+]
+
+3）同步数据到数据库
+
+
+
+
+
+操作模块
+-----------------------------
+1）startapp operation
+
+2）
+# _*_ encoding:utf-8 _*_
+from __future__ import unicode_literals
+ 
+from datetime import datetime
+ 
+from django.db import models
+ 
+from users.models import UserProfile
+from courses.models import Course
+ 
+# Create your models here.
+ 
+ 
+class UserAsk(models.Model):
+    name = models.CharField(max_length=20, verbose_name=u"姓名")
+    mobile = models.CharField(max_length=11, verbose_name=u"手机")
+    course_name = models.CharField(max_length=50, verbose_name=u"课程名")
+    add_time = models.DateTimeField(default=datetime.now, verbose_name=u"添加时间")
+ 
+    class Meta:
+        verbose_name = u"用户咨询"
+        verbose_name_plural = verbose_name
+ 
+ 
+class CourseComments(models.Model):
+    "课程评论"
+    user = models.ForeignKey(UserProfile, verbose_name=u"用户")
+    course = models.ForeignKey(Course, verbose_name=u"课程")
+    comments = models.CharField(max_length=200, verbose_name=u"评论")
+    add_time = models.DateTimeField(default=datetime.now, verbose_name=u"添加时间")
+ 
+    class Meta:
+        verbose_name = u"课程评论"
+        verbose_name_plural = verbose_name
+ 
+ 
+class UserFavorite(models.Model):
+    user = models.ForeignKey(UserProfile, verbose_name=u"用户")
+    fav_id = models.IntegerField(default=0, verbose_name=u"数据id")
+    fav_type = models.IntegerField(choices=((1,"课程"),(2,"课程机构"),(3,"讲师")), default=1, verbose_name=u"收藏类型")
+    add_time = models.DateTimeField(default=datetime.now, verbose_name=u"添加时间")
+ 
+    class Meta:
+        verbose_name = u"用户收藏"
+        verbose_name_plural = verbose_name
+ 
+ 
+class UserMessage(models.Model):
+    user = models.IntegerField(default=0, verbose_name=u"接收用户")
+    message = models.CharField(max_length=500, verbose_name=u"消息内容")
+    has_read = models.BooleanField(default=False, verbose_name=u"是否已读")
+    add_time = models.DateTimeField(default=datetime.now, verbose_name=u"添加时间")
+ 
+    class Meta:
+        verbose_name = u"用户消息"
+        verbose_name_plural = verbose_name
+ 
+ 
+class UserCourse(models.Model):
+    user = models.ForeignKey(UserProfile, verbose_name=u"用户")
+    course = models.ForeignKey(Course, verbose_name=u"课程")
+    add_time = models.DateTimeField(default=datetime.now, verbose_name=u"添加时间")
+ 
+    class Meta:
+        verbose_name = u"用户课程"
+        verbose_name_plural = verbose_name
+
+
+3）配置setting里面
+
+4）同步
+
+makemigrations
+
+
+后台页面
+----------------------
+权限管理
+少前端样式
+快速开发
+
+
+url路径已经提供
+---------------------
+ url(r'^admin/', admin.site.urls),
+
+
+创建高级用户
+---------------------------  
+
+createsuperuser
+
+admin
+530979104@qq.com
+admin123
+
+
+配置中文 setting.py
+-------------------
+
+LANGUAGE_CODE = 'zh-hans' #设置中文
+ 
+TIME_ZONE = 'Asia/Shanghai' #设置时区
+ 
+USE_I18N = True
+ 
+USE_L10N = True
+ 
+USE_TZ = False #修改为当前系统时间
+
+
+做后台配置
+------------------------
+
+admin.py
+from .models import UserProfile
+ 
+class UserProfileAdmin(admin.ModelAdmin):
+    pass
+ 
+admin.site.register(UserProfile,UserProfileAdmin)
+
+
+
+pycharm 调用mysql 错误
+---------------------------------
+DATABASES = {      
+'default': {          
+    'ENGINE': 'django.db.backends.mysql',          
+    'NAME': 'mxproject',          
+    'USER':'root',          
+    'PASSWORD':'123456',          
+    'HOST':'127.0.0.1',          
+    'PORT':'3306',          
+    'OPTIONS':{          
+    "init_command":"SET foreign_key_checks = 0;",  
+        }  
+    }  
+
+安装xadmin
+--------------------------------
+命令行安装 pip install xadmin
+
+https://blog.csdn.net/qingche456/article/details/58279692
+
+下载github源码 然后修改里面的阅读 
+
+在虚拟环境里面执行
+pip install C:\Users\zhang\Desktop\python爬虫\项目\xadmin-master.zip
+
+
+注册
+------------------------------
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'message',
+    'user',
+    'course',
+    'organization',
+    'operation',
+    'crispy_forms',
+    'xadmin'
+]
+
+配置
+----------------------
+import xadmin
+
+from  message.views import getForm
+
+urlpatterns = [
+    url(r'^admin/', xadmin.site.urls),
+    url(r'^getform/', getForm,name="getform"),
+
+]
+
+
+包管理器 apps
+---------------------------
+把所有模块移植到apps 对这个路径做处理 source
+
+import sys
+
+sys.path.insert(0,os.path.join(BASE_DIR,"apps"))
+
+
+代码方式安装
+-----------------------------------
+1)创建extra_apps 修改marksource
+2)拷贝xadmin到extra_apps下面
+3)卸载pip uninstall xadmin
+4)配置系统路径
+sys.path.insert(0,os.path.join(BASE_DIR,"extra_apps"))
+
+
+
+添加邮箱到后台xadmin
+--------------------------------------
+admin.py
+
+
+import  xadmin
+from  .models import  EmailVerifyRecord
+
+class EmailVerifyRecordAdmin(object):
+    pass
+
+
+xadmin.site.register(EmailVerifyRecord,EmailVerifyRecordAdmin)
+
+
+
+Banner图
+----------------------------
+import  xadmin
+from  .models import  EmailVerifyRecord,Banner
+
+class EmailVerifyRecordAdmin(object):
+     list_display ={'email','code','send_type','send_time'}
+     search_fields = {'email','code','send_type'}
+     list_filter = {'email','code','send_type'}
+
+
+class BannerAdmin(object):
+    list_display = ['title', 'image', 'url', 'index', 'add_time']
+    search_fields = ['title', 'image', 'url', 'index']
+    list_filter = ['title', 'image', 'url', 'index', 'add_time']
+
+xadmin.site.register(EmailVerifyRecord,EmailVerifyRecordAdmin)
+xadmin.site.register(Banner,BannerAdmin)
+
+
+
+课程模块admin.py
+----------------------------------
+class xxx(object):
+   list_display ={ }
+   search_fields={}
+   list_filter ={}
+
+
+import xadmin
+
+from .models import Course, Lesson, Video, CourseResource
+
+
+class CourseAdmin(object):
+    list_display = ['name', 'desc', 'detail', 'degree', 'learn_times', 'students']
+    search_fields = ['name', 'desc', 'detail', 'degree', 'students']
+    list_filter = ['name', 'desc', 'detail', 'degree', 'learn_times', 'students']
+
+
+class LessonAdmin(object):
+    list_display = ['course', 'name', 'add_time']
+    search_fields = ['course', 'name']
+    list_filter = ['course__name', 'name', 'add_time']
+
+
+class VideoAdmin(object):
+    list_display = ['lesson', 'name', 'add_time']
+    search_fields = ['lesson', 'name']
+    list_filter = ['lesson', 'name', 'add_time']
+    model_icon = 'fa fa-film'
+
+
+class CourseResourceAdmin(object):
+    list_display = ['course', 'name', 'download', 'add_time']
+    search_fields = ['course', 'name', 'download']
+    list_filter = ['course', 'name', 'download', 'add_time']
+
+
+xadmin.site.register(Course, CourseAdmin)
+xadmin.site.register(Lesson, LessonAdmin)
+xadmin.site.register(Video, VideoAdmin)
+xadmin.site.register(CourseResource, CourseResourceAdmin)
+
+
+机构管理模块
+---------------------------------------------
+#!usr/bin/even python
+# Author zhang
+ 
+import xadmin
+ 
+from .models import CityDict, CourseOrg, Teacher
+ 
+ 
+class CityDictAdmin(object):
+    list_display = ['name', 'desc', 'add_time']
+    search_fields = ['name', 'desc']
+    list_filter = ['name', 'desc', 'add_time']
+ 
+ 
+ 
+class CourseOrgAdmin(object):
+    list_display = ['name', 'desc', 'click_nums', 'fav_nums']
+    search_fields = ['name', 'desc', 'click_nums', 'fav_nums']
+    list_filter = ['name', 'desc', 'click_nums', 'fav_nums']
+ 
+ 
+class TeacherAdmin(object):
+    list_display = ['org', 'name', 'work_years', 'work_company']
+    search_fields = ['org', 'name', 'work_years', 'work_company']
+    list_filter = ['org', 'name', 'work_years', 'work_company']
+ 
+ 
+xadmin.site.register(CityDict, CityDictAdmin)
+xadmin.site.register(CourseOrg, CourseOrgAdmin)
+xadmin.site.register(Teacher, TeacherAdmin)
+
+
+全局设置 主题 admin.py
+-----------------------------------------
+
+from xadmin import views
+
+class BaseSetting(object):
+    enable_themes = True
+    use_bootswatch = True
+
+
+xadmin.site.register(views.BaseAdminView, BaseSetting)
+
+
+
+修改信息和折叠
+--------------------------------
+class GlobalSettings(object):
+    site_title = "硅谷后台管理系统"
+    site_footer = "硅谷在线网"
+    menu_style = "accordion"
+
+
+xadmin.site.register(views.CommAdminView, GlobalSettings)
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+

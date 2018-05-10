@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock extra_css %}
+    {% block log%}
+    {% endblock log %}
+{% block content %}
+    <div class="container">
+
+      <form class="form-signin" role="form" method="post" action="{% url 'users:login' %}">
+        <h2 class="form-signin-heading"><i class="glyphicon glyphicon-log-in"></i> 用户登录</h2>
+		  <div class="form-group has-success has-feedback">
+			<input type="text" class="form-control" name="username" id="inputSuccess4" placeholder="请输入登录账号" autofocus>
+			<span class="glyphicon glyphicon-user form-control-feedback"></span>
+		  </div>
+		  <div class="form-group has-success has-feedback">
+			<input type="text" class="form-control" name="password" id="inputSuccess3" placeholder="请输入登录密码" style="margin-top:10px;">
+			<span class="glyphicon glyphicon-lock form-control-feedback"></span>
+		  </div>
+		  <div class="form-group has-success has-feedback">
+			<select class="form-control" id="select" name="typess">
+                <option value="member">会员</option>
+                <option value="user">管理</option>
+            </select>
+		  </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me" name="remember"> 记住我
+          </label>
+          <br>
+          <label>
+            忘记密码
+          </label>
+          <label style="float:right">
+            <a href="{% url 'users:register' %}">我要注册</a>
+          </label>
+        </div>
+        <input class="btn btn-lg btn-success btn-block" type="submit" value="登录">
+          {% for key,value in login_form.errors.items %}
+              {{ value }}
+          {% endfor %}
+      {% if not login_form.errors %}{{ msg }}{% endif %}
+          {% csrf_token %}
+      </form>
+    </div>
+{#    <script src="/static/jquery/jquery-2.1.1.min.js"></script>#}
+{#    <script src="/static/bootstrap/js/bootstrap.min.js"></script>#}
+{#    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>#}
+{#    <script>#}
+{#        $(function () {#}
+{#            $("#login").click(function () {#}
+{#                 var username = $("#inputSuccess4").val();#}
+{#                 var password = $("#inputSuccess3").val();#}
+{#                 var typess = $("select").val();#}
+{#                 var remember = $("input[name='remember']").prop('checked');#}
+{#                 var csrf = $("input[name='csrfmiddlewaretoken']").val();#}
+{#                 params = {#}
+{#                     'username':username,#}
+{#                     'password':password,#}
+{#                     'typess':typess,#}
+{#                     'remember':remember,#}
+{#                     'csrfmiddlewaretoken':csrf,#}
+{#                 };#}
+{##}
+{#                 $.post('{% url "users:login" %}',params,function(data){#}
+{#                 if (data.res === 0){#}
+{#                     console.log('aaa')#}
+{#                 } else if(data.res === 1){#}
+{#                     console.log('bbb')#}
+{#                 }#}
+{#             })#}
+{##}
+{##}
+{#        });#}
+{#        })#}
+{##}
+{#    </script>#}
+{% endblock content %}
+{% block footer %}
+{% endblock footer %}
+{% block extra_js %}
+{% endblock extra_js %}
