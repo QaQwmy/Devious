@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'project',
+    'pure_pagination',
+    'haystack',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -65,6 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',  #以前叫core
             ],
         },
     },
@@ -138,3 +141,27 @@ EMAIL_HOST_USER = '18732429547@163.com'
 EMAIL_HOST_PASSWORD = 'yu1028'
 EMAIL_USE_TLS = False
 EMAIL_FROM = '18732429547@163.com'
+# 上传图片的路径
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+# 分页器
+PAGINATION_SETTINGS = {
+    'PAGE_RANGE_DISPLAYED': 10,
+    'MARGIN_PAGES_DISPLAYED': 2,
+
+    'SHOW_FIRST_PAGE_WHEN_INVALID': True,
+}
+
+#全文检索配置
+HAYSTACK_CONNECTIONS = {
+    'default':{
+        # 使用whoosh引擎
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        # 索引文件路径
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+    }
+}
+
+# 当添加、修改删除数据时，自动生成索引
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+HAYSTACK_SEARCH_RESULTS_PRE_PAGE = 6 #指定搜索结果每页的条数
