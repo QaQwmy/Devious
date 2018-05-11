@@ -1,0 +1,10 @@
+construct==2.5.3
+Django==1.8.2
+django-pure-pagination==0.3.0
+future==0.16.0
+haystack==0.42
+pefile==2017.11.5
+Pillow==5.1.0
+PyMySQL==0.8.1
+python-ptrace==0.9.3
+six==1.11.0
