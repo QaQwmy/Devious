@@ -18,7 +18,7 @@ from django.contrib import admin
 from devious.settings import MEDIA_ROOT
 from django.views.static import serve
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^admin/', admin.site.urls,name='admin'),
     url(r'',include('users.urls',namespace='users')),
     url(r'^project/',include('project.urls',namespace='project')),
     url(r'^media/(?P<path>.*)$',serve,{"document_root":MEDIA_ROOT}),

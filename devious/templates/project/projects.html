@@ -1,6 +1,6 @@
-{% extends 'base.html' %}
+{% extends 'p_base.html' %}
 {% load staticfiles %}
-{% block extra_css %}
+{% block extra_style %}
     <style>
         #footer {
             padding: 15px 0;
@@ -74,67 +74,10 @@
     </style>
 {% endblock %}
 {% block content %}
-    <div class="container theme-showcase" role="main">
 
-        <div class="container">
-            <div class="row clearfix">
-                <div class="col-md-12 column">
-                    <nav class="navbar navbar-default" role="navigation">
-                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                            <ul class="nav navbar-nav">
-                                <li>
-                                    <a rel="nofollow" href="index.html"><i class="glyphicon glyphicon-home"></i>
-                                        众筹首页</a>
-                                </li>
-                                <li class="active">
-                                    <a rel="nofollow" href="javascript:;"><i class="glyphicon glyphicon-th-large"></i>
-                                        项目总览</a>
-                                </li>
-                                <li>
-                                    <a rel="nofollow" href="start.html"><i class="glyphicon glyphicon-edit"></i>
-                                        发起众筹</a>
-                                </li>
-                                <li>
-                                    <a rel="nofollow" href="minecrowdfunding.html"><i
-                                            class="glyphicon glyphicon-user"></i> 我的众筹</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container theme-showcase" role="main">
 
-        <div class="container">
-            <div class="row clearfix">
-                <div class="col-md-12 column">
-                    <nav class="navbar navbar-default" role="navigation">
-                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                            <ul class="nav navbar-nav">
-                                <li>
-                                    <a rel="nofollow" href="{% url 'users:index' %}"><i
-                                            class="glyphicon glyphicon-home"></i> 众筹首页</a>
-                                </li>
-                                <li class="active">
-                                    <a rel="nofollow" href="{% url 'project:list' %}"><i
-                                            class="glyphicon glyphicon-th-large"></i> 项目总览</a>
-                                </li>
-                                <li>
-                                    <a rel="nofollow" href="start.html"><i class="glyphicon glyphicon-edit"></i>
-                                        发起众筹</a>
-                                </li>
-                                <li>
-                                    <a rel="nofollow" href="minecrowdfunding.html"><i
-                                            class="glyphicon glyphicon-user"></i> 我的众筹</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-                </div>
-            </div>
-        </div>
+
+
 
         <div class="container">
             <div class="row clearfix">
@@ -143,7 +86,8 @@
                         <div class="panel-body">
                             <ul id="typeList" style="list-style: none;">
                                 <li>
-                                    分类：<a class="{% ifequal sort '' %}label-type active{% endifequal %}" href="?status={{ status }}&sorts={{ sorts }}">全部</a>
+                                    分类：<a class="{% ifequal sort '' %}label-type active{% endifequal %}"
+                                          href="?status={{ status }}&sorts={{ sorts }}">全部</a>
                                     {% for tag in tag_list %}
                                         <a class="{% ifequal sort tag.id|stringformat:"i" %}label-type active{% else %}label-text{% endifequal %}"
                                            href="?sort={{ tag.id }}&status={{ status }}&sorts={{ sorts }}">{{ tag.name }}</a>{% endfor %}
@@ -179,7 +123,8 @@
                                     <div class="form-group">
                                         <input type="text" class="form-control" placeholder="请输入搜索内容" id="cont">
                                     </div>
-                                    <button class="btn btn-default" id="search"><i class="glyphicon glyphicon-search"></i> 搜索
+                                    <button class="btn btn-default" id="search"><i
+                                            class="glyphicon glyphicon-search"></i> 搜索
                                     </button>
                                 </div>
                             </div>
@@ -231,7 +176,7 @@
             </div>
         </div>
 
-    // 分页器
+        <!-- 分页器  -->
         <div class="container">
             <div class="row clearfix">
                 <div class="col-md-12 column" style="text-align:center">
@@ -262,10 +207,10 @@
     <script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>
     <script>
         $(function () {
-            $('#search').on('click',function () {
+            $('#search').on('click', function () {
                 keywards = $("#cont").val();
                 {#alert(keywards);#}
-                request_url = '/project/list/?keywords='+keywards;
+                request_url = '/project/list/?keywords=' + keywards;
                 {#alert(request_url)#}
                 window.location.href = request_url
             })

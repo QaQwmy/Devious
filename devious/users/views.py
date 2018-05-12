@@ -43,8 +43,11 @@ class UserLoginView(View):
 				if user.is_active:
 					login(request, user)
 					print('------------>', user.is_staff, typess)
-					if user.is_staff == True and typess == 'user':
-						return render(request, 'users/main.html')
+					if user.is_staff == True:
+						if typess == 'user':
+							return redirect(reverse('admin'))
+						else:
+							return redirect(reverse('users:index'))
 
 					elif user.is_staff == False and typess == 'member':
 						return redirect(reverse('users:index'))
@@ -105,6 +108,23 @@ class ActiveUserView(View):
 # 用户登出
 class UserLogoutView(View):
 	def get(self, request):
-		return render(request, 'index.html')
+		user = request.user
+		if user:
+			logout(request)
+			return redirect(reverse('users:index'))
 
 
+# 发起众筹
+class InitiateView(View):
+	def get(self,request):
+		return render(request,'users/start.html')
+
+
+# 发起众筹2
+class Initiate2View(View):
+	def get(self,request):
+		tags = Tag.objects.all()
+		context = {
+			'tags':tags,
+		}
+		return render(request,'users/start-step-1.html',context=context)
