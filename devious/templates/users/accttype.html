@@ -63,7 +63,7 @@
 		<div class="row">
       <div class="col-xs-6 col-md-3">
       
-      <h2>商业公司</h2>
+      <h2 class="sygs">商业公司</h2>
         <a href="#" class="thumbnail">
           
           <img alt="100%x180" src="/static/img/services-box1.jpg" data-holder-rendered="true" style="height: 180px; width: 100%; display: block;">
@@ -114,7 +114,10 @@
 	<script>
     $(".thumbnail").click(function(){
         $('.seltype').remove();
+
         $(this).prepend('<div class="glyphicon glyphicon-ok seltype"></div>');
+        var aa = $(".thumbnail").prev().attr('class');
+        alert(aa);
     });
 	</script>
   </body>

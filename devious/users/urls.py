@@ -18,6 +18,7 @@ urlpatterns = [
 	url(r'^ini3/(?P<pro_id>.*)',views.AddGoods.as_view(),name='addgood'),
 	url(r'^ini4/$',views.Initiate4View.as_view(),name='ini4'),
 	url(r'^ini5/$',views.Initiate5View.as_view(),name='ini5'),
+	url(r'^ini6/$',views.Initiate6View.as_view(),name='ini6'),
 	# 用户中心
 	url(r'^info/$',views.UserInfo.as_view(),name='info'),
 	url(r'^mine/$',views.MyDevious.as_view(),name='mine'),

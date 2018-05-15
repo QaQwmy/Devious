@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from users.forms import UserRegisterForm, UserLoginForm, AddressForm
-from users.models import UserProfile, EmailCode, Banner, Address, UserCreate,UserSupprot,UserFlower
+from users.models import UserProfile, EmailCode, Banner, Address, UserCreate, UserSupprot, UserFlower
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
@@ -139,60 +139,64 @@ class Initiate2View(View):
 		}
 		return render(request, 'users/start-step-1.html', context=context)
 
+
+
+
+class Initiate6View(View):
+	def get(self, request):
+		return render(request, 'users/start-step-2.html')
+
 	def post(self, request):
-		form = Upload(request.POST, request.FILES)
-		if form.is_valid():
-			tag = request.POST.get('tag')
-			print(tag)
-			label = request.POST.getlist('labelname')
-			print(type(label))
-			print(label)
-			label_str = ','.join(label)
-			p_name = request.POST.get('p_name')
+		tag = request.POST.get('tag')
+		print(tag)
+		label = request.POST.getlist('labelname')
+		print(type(label))
+		print(label)
+		label_str = ','.join(label)
+		p_name = request.POST.get('p_name')
 
-			p_desc = request.POST.get('p_desc')
-			p_money = request.POST.get('p_money')
+		p_desc = request.POST.get('p_desc')
+		p_money = request.POST.get('p_money')
 
-			p_time = request.POST.get('p_time')
-			image_title = form.cleaned_data['image_title']
-			image_detail = form.cleaned_data['image_detail']
+		p_time = request.POST.get('p_time')
+		image_title = save_image(str(int(time.time())) + request.FILES['image_title'].name, request.FILES['image_title'])
+		image_detail = save_image(str(int(time.time())) + request.FILES['image_detail'].name, request.FILES['image_detail'])
 
-			u_name = request.POST.get('u_name')
-			u_phone = request.POST.get('u_phone')
-			u_c_phone = request.POST.get("u_c_phone")
-			u_desc = request.POST.get("u_desc")
-			now = datetime.now()
-			aDay = timedelta(days=30)
-			now = now + aDay
-			project = Project()
-			project.name = p_name
-			project.desc = p_desc
-			print(p_money)
-			project.money = int(p_money)
-			project.image1 = image_title
-			project.image2 = image_detail
-			project.tags = label_str
-			tags = Tag.objects.get(name=tag)
-			project.tag = tags
-			project.date = now.strftime('%Y-%m-%d')
-			project.time = int(p_time)
-			# project.status = '即将开始'
-			project.save()
-			company = Company()
-			company.name = u_name
-			company.desc = u_desc
-			company.phone = u_c_phone
-			company.c_phone = int(u_phone)
-			company.aut = '未认证'
+		u_name = request.POST.get('u_name')
+		u_phone = request.POST.get('u_phone')
+		u_c_phone = request.POST.get("u_c_phone")
+		u_desc = request.POST.get("u_desc")
+		now = datetime.now()
+		aDay = timedelta(days=30)
+		now = now + aDay
+		project = Project()
+		project.name = p_name
+		project.desc = p_desc
+		print(p_money)
+		project.money = int(p_money)
+		project.image1 = image_title
+		project.image2 = image_detail
+		project.tags = label_str
+		tags = Tag.objects.get(name=tag)
+		project.tag = tags
+		project.date = now.strftime('%Y-%m-%d')
+		project.time = int(p_time)
+		# project.status = '即将开始'
+		project.save()
+		company = Company()
+		company.name = u_name
+		company.desc = u_desc
+		company.phone = u_c_phone
+		company.c_phone = int(u_phone)
+		company.aut = '未认证'
 
-			company.save()
-			projects = Project.objects.get(name=p_name)
-			usercreate = UserCreate()
-			usercreate.user = request.user
-			usercreate.project = projects
-			usercreate.save()
-			return render(request, 'users/start-step-2.html', {'project': projects})
-
+		company.save()
+		projects = Project.objects.get(name=p_name)
+		usercreate = UserCreate()
+		usercreate.user = request.user
+		usercreate.project = projects
+		usercreate.save()
+		return JsonResponse({"res": '1'})
 
 class Initiate4View(View):
 	def get(self, request):
@@ -217,11 +221,11 @@ class MyDevious(View):
 	def get(self, request):
 		_user = request.user
 
-
 		supp_p = UserSupprot.objects.filter(user=_user)
 		flow_p = UserFlower.objects.filter(user=_user)
 		cre_p = UserCreate.objects.filter(user=_user)
-		return render(request, 'users/minecrowdfunding.html',{'s_projects':supp_p,'f_projects':flow_p,'c_projects':cre_p})
+		return render(request, 'users/minecrowdfunding.html',
+					  {'s_projects': supp_p, 'f_projects': flow_p, 'c_projects': cre_p})
 
 
 # 实名认证
@@ -236,11 +240,12 @@ class Apply_real(View):
 		return render(request, 'users/')
 
 
-def save_image(image_detail_filename, file_obj, uploadimage_url):
-	with default_storage.open(MEDIA_ROOT + '/' + uploadimage_url + '/' + image_detail_filename) as file:
+def save_image(image_detail_filename, file_obj):
+	# 一定要有uploadimage文件夹
+	with default_storage.open(MEDIA_ROOT + '/' + 'uploadimage' + '/' + image_detail_filename,'wb+') as file:
 		for chunk in file_obj.chunks():
 			file.write(chunk)
-	image_detail_upload = 'media/' + uploadimage_url + '/' + image_detail_filename
+	image_detail_upload = 'uploadimage/' + image_detail_filename
 	return image_detail_upload
 
 

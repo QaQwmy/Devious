@@ -155,7 +155,7 @@
                                             项目信息
                                         </h3>
                                     </div>
-                                    <form class="form-horizontal" id="form" action="{% url 'users:ini2' %}" method="post" enctype="multipart/form-data">
+                                    <form class="form-horizontal" id="forms">
                                         <div class="form-group">
                                             <label for="inputEmail3" class="col-sm-2 control-label">分类信息</label>
                                             <div class="col-sm-10">
@@ -177,7 +177,8 @@
                                                     <li style="margin:10px 0">[电脑]
                                                         {% for label in labels %}
                                                             <span>
-                                                            <input type="checkbox" value="{{ label.id }}" name="labelname" />{{ label.name }}
+                                                            <input type="checkbox" value="{{ label.id }}"
+                                                                   name="labelname"/>{{ label.name }}
                                                             </span>
                                                         {% endfor %}
                                                     </li>
@@ -262,7 +263,7 @@
                                         </div>
                                         <br>
                                         <div class="panel-footer" style="text-align:center;">
-                                            <input type="submit" class="btn  btn-warning btn-lg"
+                                            <input type="button" class="btn  btn-warning btn-lg"
                                                    value="下一步" id="btn">
                                         </div>
                                         <input type='hidden' name='csrfmiddlewaretoken'
@@ -282,71 +283,99 @@
 {% endblock content %}
 {% block extra_js %}
     <script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>
-{#    <script>#}
-{#        $(function () {#}
-            {#$('#btn').on('click',function () {#}
-            {#    var tag = $("input[name='inlineRadioOptions']:checked").val();#}
-            {#alert(tag)；#}
-            {#    var p_name = $("#p_name").val();#}
-            {#    var p_desc = $("#p_desc").val();#}
-            {#    var p_money = $("#p_money").val();#}
-            {#    var p_time = $("#p_time").val();#}
-            {#var image_title = $("#image_title")[0].files[0];#}
-            {#alert(image_title);#}
-            {#var image_detail = $("#image_detail")[0].files[0];#}
-            {##}
-            {#    var u_name = $("#u_name").val();#}
-            {#    var u_phone = $("#u_phone").val();#}
-            {#    var u_c_phone = $("#u_c_phone").val();#}
-            {#    var u_desc = $("#u_desc").val();#}
-            {#    $.ajax({#}
-            {#        cache:false,#}
-            {#        url: {% url 'users:ini2' %},#}
-            {#        async: true,#}
-            {#        type:'POST',#}
-            {#        data: {#}
-            {#            'tag':tag,#}
-            {#            'p_name':p_name,#}
-            {#            'p_desc':p_desc,#}
-            {#            'p_money':p_money,#}
-            {#            'p_time':p_time,#}
-            {#            'u_name':u_name,#}
-            {#            'u_phone':u_phone,#}
-            {#            'u_c_phone':u_c_phone,#}
-            {#            'u_desc':u_desc,#}
-            {#'image_title':image_title,#}
-            {#'image_detail':image_detail,#}
-            {#        },#}
-            {#        beforeSend:function (xhr,setting) {#}
-            {#            xhr.setRequestHeader("X-CSRFToken","{{ csrf_token }}")#}
-            {#        },#}
-            {#        success:function (data) {#}
-            {#            if (data.res == 'ok'){#}
-            {#                window.location.href='{% url "users:ini3" %}'#}
-            {#            }else{#}
-            {#                window.location.reload();#}
-            {#                alert('aaa')#}
-            {#            }#}
-            {#        }#}
-            {#    })#}
-{#            //{#})#}
-{#            $("#btn").on('click', function () {#}
-{#                var form = new FormData(document.getElementById('form'));#}
-{#                $.ajax({#}
-{#                    url: "{% url 'users:ini2' %}",#}
-{#                    type: 'POST',#}
-{#                    data: form,#}
-{#                    processData: false,#}
-{#                    contentType: false,#}
-{#                    beforeSend: function (xhr, setting) {#}
-{#                        xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}")#}
-{#                    },#}
-{#                    success: function (data) {#}
-{#                        window.location.href = "{% url "users:ini3" %}"#}
-{#                    },#}
-{#                })#}
-{#            });#}
-{##}
-{#        })#}
-{#    </script>#}
+    {#    <script>#}
+    {#        $(function () {#}
+    {#$('#btn').on('click',function () {#}
+    {#    var tag = $("input[name='inlineRadioOptions']:checked").val();#}
+    {#alert(tag)；#}
+    {#    var p_name = $("#p_name").val();#}
+    {#    var p_desc = $("#p_desc").val();#}
+    {#    var p_money = $("#p_money").val();#}
+    {#    var p_time = $("#p_time").val();#}
+    {#var image_title = $("#image_title")[0].files[0];#}
+    {#alert(image_title);#}
+    {#var image_detail = $("#image_detail")[0].files[0];#}
+    {##}
+    {#    var u_name = $("#u_name").val();#}
+    {#    var u_phone = $("#u_phone").val();#}
+    {#    var u_c_phone = $("#u_c_phone").val();#}
+    {#    var u_desc = $("#u_desc").val();#}
+    {#    $.ajax({#}
+    {#        cache:false,#}
+    {#        url: {% url 'users:ini2' %},#}
+    {#        async: true,#}
+    {#        type:'POST',#}
+    {#        data: {#}
+    {#            'tag':tag,#}
+    {#            'p_name':p_name,#}
+    {#            'p_desc':p_desc,#}
+    {#            'p_money':p_money,#}
+    {#            'p_time':p_time,#}
+    {#            'u_name':u_name,#}
+    {#            'u_phone':u_phone,#}
+    {#            'u_c_phone':u_c_phone,#}
+    {#            'u_desc':u_desc,#}
+    {#'image_title':image_title,#}
+    {#'image_detail':image_detail,#}
+    {#        },#}
+    {#        beforeSend:function (xhr,setting) {#}
+    {#            xhr.setRequestHeader("X-CSRFToken","{{ csrf_token }}")#}
+    {#        },#}
+    {#        success:function (data) {#}
+    {#            if (data.res == 'ok'){#}
+    {#                window.location.href='{% url "users:ini3" %}'#}
+    {#            }else{#}
+    {#                window.location.reload();#}
+    {#                alert('aaa')#}
+    {#            }#}
+    {#        }#}
+    {#    })#}
+    {#            //{#})#}
+    {#            $("#btn").on('click', function () {#}
+    {#                var form = new FormData(document.getElementById('form'));#}
+    {#                $.ajax({#}
+    {#                    url: "{% url 'users:ini2' %}",#}
+    {#                    type: 'POST',#}
+    {#                    data: form,#}
+    {#                    processData: false,#}
+    {#                    contentType: false,#}
+    {#                    beforeSend: function (xhr, setting) {#}
+    {#                        xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}")#}
+    {#                    },#}
+    {#                    success: function (data) {#}
+    {#                        window.location.href = "{% url "users:ini3" %}"#}
+    {#                    },#}
+    {#                })#}
+    {#            });#}
+    {##}
+    {#        })#}
+    {#    </script>#}
+    <script>
+        $(function () {
+            $("#btn").on('click', function () {
+                var fs = document.getElementById('forms');
+                var fd = new FormData(fs);
+                $.ajax({
+                    url: "{% url 'users:ini6' %}",
+                    type: "POST",
+                    data: fd,
+                    processData: false,  // 告诉jQuery不要去处理发送的数据
+                    contentType: false,   // 告诉jQuery不要去设置Content-Type请求头
+                    beforeSend: function (xhr, setting) {
+                            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}")
+                        },
+                    success: function (data) {
+                        if (data.res == '1') {
+                            console.log('aaa')
+                            window.location.href = "{% url "users:ini6" %}"
+                        } else {
+                            alert('aaa')
+                        }
+                    }
+                });
+            });
+
+
+        })
+    </script>
 {% endblock extra_js %}
