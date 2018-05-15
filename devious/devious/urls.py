@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^project/',include('project.urls',namespace='project')),
     url(r'^media/(?P<path>.*)$',serve,{"document_root":MEDIA_ROOT}),
     # url(r'^search/',include('haystack.urls')),
+    url(r'^order/',include('order.urls',namespace='order')),
 ]

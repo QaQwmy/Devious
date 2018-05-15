@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'project',
     'pure_pagination',
     'haystack',
+    'order',
 ]
 
 MIDDLEWARE_CLASSES = [

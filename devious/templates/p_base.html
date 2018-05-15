@@ -33,7 +33,7 @@
                                             class="glyphicon glyphicon-user"></i> {{ user.username }}<span
                                             class="caret"></span></a>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#"><i class="glyphicon glyphicon-scale"></i> 会员中心</a>
+                                        <li><a href="{% url 'users:info' %}"><i class="glyphicon glyphicon-scale"></i> 会员中心</a>
                                         </li>
                                         <li><a href="#"><i class="glyphicon glyphicon-comment"></i> 消息 </a></li>
                                         <li class="divider"></li>

@@ -1,0 +1,65 @@
+{% extends 'm_base.html' %}
+{% load staticfiles %}
+{% block extrac_style %}
+    <style>
+#footer {
+    padding: 15px 0;
+    background: #fff;
+    border-top: 1px solid #ddd;
+    text-align: center;
+}
+#topcontrol {
+  color: #fff;
+  z-index: 99;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+  background: #222;
+  position: relative;
+  right: 14px !important;
+  bottom: 11px !important;
+  border-radius: 3px !important;
+}
+
+#topcontrol:after {
+  /*top: -2px;*/
+  left: 8.5px;
+  content: "\f106";
+  position: absolute;
+  text-align: center;
+  font-family: FontAwesome;
+}
+
+#topcontrol:hover {
+    color: #fff;
+    background: #18ba9b;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+	</style>
+{% endblock extrac_style %}
+{% block content %}
+    <div class="col-sm-9 col-md-9 column">
+        <blockquote style="border-left: 5px solid #f60;color:#f60;padding: 0 0 0 20px;">
+                                        <b>
+                                            我的钱包
+                                        </b>
+                                    </blockquote>
+            <div id="main" style="width: 600px;height:400px;"></div>
+            <blockquote style="border-left: 5px solid #f60;color:#f60;padding: 0 0 0 20px;">
+                                        <b>
+                                            理财
+                                        </b>
+                                    </blockquote>
+            <div id="main1" style="width: 600px;height:400px;"></div>
+            <blockquote style="border-left: 5px solid #f60;color:#f60;padding: 0 0 0 20px;">
+                                        <b>
+                                            比例
+                                        </b>
+                                    </blockquote>
+            <div id="main2" style="width: 600px;height:400px;"></div>
+		</div>
+{% endblock content %}

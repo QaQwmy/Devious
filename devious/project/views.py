@@ -2,12 +2,14 @@ from django.shortcuts import render
 from django.views.generic import View
 from project.models import Tag, Project
 from pure_pagination import Paginator, PageNotAnInteger
-from users.models import UserFlower
+from users.models import UserFlower,Address
 from django.http import HttpResponse
 import json
 from project.models import Company
 from users.models import UserProfile
 from django.db.models import Q
+from django.http import JsonResponse
+
 # Create your views here.
 
 
@@ -67,8 +69,8 @@ class ProjectDetailView(View):
 				fav_com = True
 			fav_user = UserFlower.objects.filter(company=pro.id)
 			num = len([fav.user for fav in fav_user])
-
-			return render(request, 'project/project.html', {'project': pro, 'fav_com': fav_com, 'num': num})
+			return_goods = pro.returngoods_set.all()
+			return render(request, 'project/project.html', {'project': pro, 'fav_com': fav_com, 'num': num,'return_goods':return_goods})
 
 
 # 关注公司
@@ -123,3 +125,19 @@ class GoPayView(View):
 			'project': project,
 			'money': mon,
 		})
+
+
+	def post(self,request):
+			name = request.POST.get('name')
+			phone = request.POST.get('phone')
+			address1 = request.POST.get('address')
+			address2 = Address()
+			address2.name = name
+			address2.user = request.user
+			address2.phone = phone
+			address2.address = address1
+			address2.save()
+
+			return JsonResponse({'res':1})
+
+

@@ -11,8 +11,16 @@ urlpatterns = [
 	url(r'^active/(?P<active_code>.*)',views.ActiveUserView.as_view(),name='active'),
 	# 退出
 	url(r'^logout/$',views.UserLogoutView.as_view(),name='logout'),
+
 	# 发起众筹 1
 	url(r'^ini1/$',views.InitiateView.as_view(),name='ini1'),
 	url(r'^ini2/$', views.Initiate2View.as_view(), name='ini2'),
+	url(r'^ini3/(?P<pro_id>.*)',views.AddGoods.as_view(),name='addgood'),
+	url(r'^ini4/$',views.Initiate4View.as_view(),name='ini4'),
+	url(r'^ini5/$',views.Initiate5View.as_view(),name='ini5'),
+	# 用户中心
+	url(r'^info/$',views.UserInfo.as_view(),name='info'),
+	url(r'^mine/$',views.MyDevious.as_view(),name='mine'),
+	url(r'^real/$',views.RealName.as_view(),name='real'),
 
 ]

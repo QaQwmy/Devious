@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from datetime import datetime
-from project.models import Project,Company
+from project.models import Project, Company
+
 
 # Create your models here.
 
@@ -31,6 +32,7 @@ class EmailCode(models.Model):
 
 
 class Banner(models.Model):
+	project = models.ForeignKey(Project, null=True)
 	name = models.CharField(max_length=20, verbose_name='轮播图')
 	image = models.ImageField(upload_to='banner/%Y/%m', verbose_name='图片路径')
 	url = models.URLField(verbose_name='链接')
@@ -44,9 +46,9 @@ class Banner(models.Model):
 
 
 class UserSupprot(models.Model):
-	user = models.ForeignKey(UserProfile,verbose_name='支持者')
-	project = models.ForeignKey(Project,verbose_name='支持的项目')
-	add_time = models.DateField(verbose_name='支持时间',default=datetime.now)
+	user = models.ForeignKey(UserProfile, verbose_name='支持者')
+	project = models.ForeignKey(Project, verbose_name='支持的项目')
+	add_time = models.DateField(verbose_name='支持时间', default=datetime.now)
 
 	class Meta:
 		verbose_name = '用户支持'
@@ -54,9 +56,9 @@ class UserSupprot(models.Model):
 
 
 class UserFlower(models.Model):
-	user = models.ForeignKey(UserProfile,verbose_name='关注的人')
-	company = models.ForeignKey(Company,verbose_name='关注的公司')
-	add_time = models.DateField(verbose_name='关注的时间',default=datetime.now)
+	user = models.ForeignKey(UserProfile, verbose_name='关注的人')
+	company = models.ForeignKey(Project, verbose_name='关注的公司')
+	add_time = models.DateField(verbose_name='关注的时间', default=datetime.now)
 
 	class Meta:
 		verbose_name = '用户关注'
@@ -64,8 +66,9 @@ class UserFlower(models.Model):
 
 
 class Address(models.Model):
-	user = models.ForeignKey(UserProfile,verbose_name='收货人')
-	address = models.CharField(max_length=100,verbose_name='收货地址')
+	user = models.ForeignKey(UserProfile, verbose_name='用户')
+	name = models.CharField(max_length=30, verbose_name='收货人', null=True)
+	address = models.CharField(max_length=100, verbose_name='收货地址')
 	phone = models.BigIntegerField(verbose_name='手机号码')
 
 	class Meta:
@@ -74,3 +77,15 @@ class Address(models.Model):
 
 	def __str__(self):
 		return self.address
+
+
+class UserCreate(models.Model):
+	user = models.ForeignKey(UserProfile, verbose_name='创建项目的人')
+	project = models.ForeignKey(Project, verbose_name='创建的项目')
+	add_time = models.DateField(verbose_name='关注的时间', default=datetime.now)
+
+	class Meta:
+		verbose_name_plural = verbose_name = '创建项目表'
+
+	def __str__(self):
+		return self.user.username

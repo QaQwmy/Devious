@@ -87,7 +87,7 @@
                                     <div class="progress" style="height:10px; margin-bottom: 5px;">
                                       <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
                                     </div>
-                                    <p>剩余 15 天</p>
+                                    <p>剩余 {{ project.get_time }} 天</p>
                                     <div>
                                         <p><span>已有{{ project.supporter }}人支持该项目</span></p>
                                      <button type="button" class="btn  btn-warning btn-lg btn-block" data-toggle="modal" data-target="#myModal">立即支持</button>
@@ -120,50 +120,22 @@
                         </div>
                     </div>
                 </div>
+                            {% for good in return_goods %}
 					<div class="panel panel-default" style="border-radius: 0px;">
 						<div class="panel-heading">
 							<h3 >
-								￥1.00 <span style="float:right;font-size:12px;">无限额，447位支持者</span>
+								￥{{ good.pay_money }}.00 <span style="float:right;font-size:12px;">{{ good.palces }}，{{ good.project.supporter }}位支持者</span>
 							</h3>
 						</div>
 						<div class="panel-body">
-                            <p>配送费用：包邮</p>
-                            <p>预计发放时间：项目筹款成功后的50天内</p>
-                            <button type="button" class="btn  btn-warning btn-lg" onclick="window.location.href='pay-step-1.html'">支持</button>
+                            <p>配送费用：{{ good.freight }}</p>
+                            <p>预计发放时间：项目筹款成功后的{{ good.return_goods_time }}天内</p>
+                            <button type="button" class="btn  btn-warning btn-lg" onclick="window.location.href='/project/pay/?id={{ project.id }}&mon={{ good.pay_money }}'">支持</button>
                             <br><br>
-                            <p>感谢您的支持，在众筹开始后，您将以79元的优惠价格获得“遇见彩虹?”智能插座一件（参考价208元）。</p>
+                            <p>{{ good.desc }}）。</p>
 						</div>
 					</div>
-
-					<div class="panel panel-default" style="border-radius: 0px;">
-						<div class="panel-heading">
-							<h3 >
-								￥149.00 <span style="float:right;font-size:12px;">限额2000位，剩余1966位</span>
-							</h3>
-						</div>
-						<div class="panel-body">
-                            <p>配送费用：包邮</p>
-                            <p>预计发放时间：项目筹款成功后的50天内</p>
-                            <button type="button" class="btn  btn-warning btn-lg" onclick="window.location.href='pay-step-1.html'">支持</button>
-                            <br><br>
-                            <p>感谢您的支持，在众筹开始后，您将以79元的优惠价格获得“遇见彩虹?”智能插座一件（参考价208元）。</p>
-						</div>
-					</div>
-					<div class=" panel panel-default" style="border-radius: 0px;">
-						<div class="panel-heading">
-							<h3 >
-								风险提示
-							</h3>
-						</div>
-						<div class="panel-body">
-                            <p>1.众筹并非商品交易，存在一定风险。支持者根据自己的判断选择、支持众筹项目，与发起人共同实现梦想并获得发起人承诺的回报。<br>
-2.众筹平台仅提供平台网络空间及技术支持等中介服务，众筹仅存在于发起人和支持者之间，使用众筹平台产生的法律后果由发起人与支持者自行承担。<br>
-3.本项目必须在2017-06-09之前达到￥10000.00 的目标才算成功，否则已经支持的订单将取消。订单取消或募集失败的，您支持的金额将原支付路径退回。<br>
-4.请在支持项目后15分钟内付款，否则您的支持请求会被自动关闭。<br>
-5.众筹成功后由发起人统一进行发货，售后服务由发起人统一提供；如果发生发起人无法发放回报、延迟发放回报、不提供回报后续服务等情况，您需要直接和发起人协商解决。<br>
-6.如您不同意上述风险提示内容，您有权选择不支持；一旦选择支持，视为您已确认并同意以上提示内容。</p>
-						</div>
-					</div>
+{% endfor %}
 
                     <div><h2>为你推荐</h2><hr></div>
 					<div class="prjtip panel panel-default" style="border-radius: 0px;">
@@ -201,49 +173,21 @@
 	<div class="row clearfix">
 		<div class="col-sm-3 col-md-3 column" id="myScrollspy">
             <ul class="nav nav-tabs nav-stacked">
-                <li class="active"><a href="#section-1">￥1.00</a></li>
-                <li class="active"><a href="#section-2">￥149.00</a></li>
-                <li class="active"><a href="#section-3">￥249.00</a></li>
-                <li class="active"><a href="#section-4">￥549.00</a></li>
-                <li class="active"><a href="#section-5">￥1999.00</a></li>
+                {% for good in return_goods %}
+                <li class="active"><a href="#section-1">￥{{ good.pay_money }}.00</a></li>
+                {% endfor %}
             </ul>
 		</div>
 		<div id="navList" class="col-sm-9 col-md-9 column" style="height:400px;overflow-y:auto;">
-            <h2 id="section-1" style="border-bottom:1px dashed #ddd;" ><span style="font-size:20px;font-weight:bold;">￥1.00</span><span style="font-size:12px;margin-left:60px;">无限额，223位支持者</span></h2>
-            <p>配送费用：全国包邮</p>
-            <p>预计发放时间：项目筹款成功后的30天内</p>
-            <button type="button" class="btn  btn-warning btn-lg " onclick="window.location.href='/project/pay/?id={{ project.id }}&mon=1'">支持</button>
+            {% for good in return_goods %}
+            <h2 id="section-1" style="border-bottom:1px dashed #ddd;" ><span style="font-size:20px;font-weight:bold;">￥{{ good.pay_money }}.00</span><span style="font-size:12px;margin-left:60px;">{{ good.palces }}，{{ good.project.supporter }}位支持者</span></h2>
+            <p>配送费用：全国{{ good.freight }}</p>
+            <p>预计发放时间：项目筹款成功后的{{ good.return_goods_time }}天内</p>
+            <button type="button" class="btn  btn-warning btn-lg " onclick="window.location.href='/project/pay/?id={{ project.id }}&mon={{ good.pay_money }}'">支持</button>
             <br><br>
-            <p>每满1750人抽取一台活性富
-                氢净水直饮机，至少抽取一台。抽取名额（小数点后一位四舍五入）=参与人数÷1750人，由苏宁官方抽取。</p>
+            <p>{{ good.desc }}</p>
             <hr>
-            <h2 id="section-2" style="border-bottom:1px dashed #ddd;" ><span style="font-size:20px;font-weight:bold;">￥149.00</span><span style="font-size:12px;margin-left:60px;">无限额，223位支持者</span></h2>
-            <p>配送费用：全国包邮</p>
-            <p>预计发放时间：项目筹款成功后的30天内</p>
-            <button type="button" class="btn  btn-warning btn-lg " onclick="window.location.href='/project/pay/?id={{ project.id }}&mon=149'">支持</button>
-            <br><br>
-            <p>每满1750人抽取一台活性富氢净水直饮机，至少抽取一台。抽取名额（小数点后一位四舍五入）=参与人数÷1750人，由苏宁官方抽取。</p>
-            <hr>
-            <h2 id="section-3" style="border-bottom:1px dashed #ddd;" ><span style="font-size:20px;font-weight:bold;">￥249.00</span><span style="font-size:12px;margin-left:60px;">无限额，223位支持者</span></h2>
-            <p>配送费用：全国包邮</p>
-            <p>预计发放时间：项目筹款成功后的30天内</p>
-            <button type="button" class="btn  btn-warning btn-lg " onclick="window.location.href='/project/pay/?id={{ project.id }}&mon=249'">支持</button>
-            <br><br>
-            <p>每满1750人抽取一台活性富氢净水直饮机，至少抽取一台。抽取名额（小数点后一位四舍五入）=参与人数÷1750人，由苏宁官方抽取。</p>
-            <hr>
-            <h2 id="section-4" style="border-bottom:1px dashed #ddd;" ><span style="font-size:20px;font-weight:bold;">￥549.00</span><span style="font-size:12px;margin-left:60px;">无限额，223位支持者</span></h2>
-            <p>配送费用：全国包邮</p>
-            <p>预计发放时间：项目筹款成功后的30天内</p>
-            <button type="button" class="btn  btn-warning btn-lg " onclick="window.location.href='/project/pay/?id={{ project.id }}&mon=549'">支持</button>
-            <br><br>
-            <p>每满1750人抽取一台活性富氢净水直饮机，至少抽取一台。抽取名额（小数点后一位四舍五入）=参与人数÷1750人，由苏宁官方抽取。</p>
-            <hr>
-            <h2 id="section-5" style="border-bottom:1px dashed #ddd;" ><span style="font-size:20px;font-weight:bold;">￥1999.00</span><span style="font-size:12px;margin-left:60px;">无限额，223位支持者</span></h2>
-            <p>配送费用：全国包邮</p>
-            <p>预计发放时间：项目筹款成功后的30天内</p>
-            <button type="button" class="btn  btn-warning btn-lg " onclick="window.location.href='/project/pay/?id={{ project.id }}&mon=1999'">支持</button>
-            <br><br>
-            <p>每满1750人抽取一台活性富氢净水直饮机，至少抽取一台。抽取名额（小数点后一位四舍五入）=参与人数÷1750人，由苏宁官方抽取。</p>
+            {% endfor %}
             </div>
         </div>
 	</div>

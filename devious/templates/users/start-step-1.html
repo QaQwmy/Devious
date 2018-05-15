@@ -155,143 +155,198 @@
                                             项目信息
                                         </h3>
                                     </div>
-                                    <form class="form-horizontal">
+                                    <form class="form-horizontal" id="form" action="{% url 'users:ini2' %}" method="post" enctype="multipart/form-data">
                                         <div class="form-group">
                                             <label for="inputEmail3" class="col-sm-2 control-label">分类信息</label>
                                             <div class="col-sm-10">
-                                                <label class="radio-inline">
-                                                    <input type="radio" name="inlineRadioOptions" id="inlineRadio1"
-                                                           value="option1"> 科技
-                                                </label>
-                                                <label class="radio-inline">
-                                                    <input type="radio" name="inlineRadioOptions" id="inlineRadio2"
-                                                           value="option2"> 设计
-                                                </label>
-                                                <label class="radio-inline">
-                                                    <input type="radio" name="inlineRadioOptions" id="inlineRadio3"
-                                                           value="option3"> 公益
-                                                </label>
-                                                <label class="radio-inline">
-                                                    <input type="radio" name="inlineRadioOptions" id="inlineRadio3"
-                                                           value="option3"> 农业
-                                                </label>
+                                                {% for tag in tags %}
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="tag" id="inlineRadio1"
+                                                               value="{{ tag.name }}"> {{ tag.name }}
+                                                    </label>
+                                                {% endfor %}
+
+
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="inputEmail3" class="col-sm-2 control-label">标签</label>
                                             <div class="col-sm-10">
                                                 <ul style="list-style:none;padding-left:0;">
-                                                    <li style="margin:10px 0">[手机]
-                                                        <span class="label-txt">手机</span> <span
-                                                                class="label-txt">快充</span> <span
-                                                                class="label-txt">文字标签</span> <span class="label-txt">文字标签</span>
-                                                        <span class="label-txt">文字标签</span> <span
-                                                                class="label-txt">文字标签</span>
-                                                    </li>
-                                                    <li style="margin:10px 0">[数码]
-                                                        <span class="label-txt">文字标签</span> <span
-                                                                class="label-txt">文字标签</span> <span class="label-txt">文字标签</span>
-                                                        <span class="label-txt">文字标签</span> <span
-                                                                class="label-txt">文字标签</span> <span class="label-txt">文字标签</span>
-                                                    </li>
+
                                                     <li style="margin:10px 0">[电脑]
-                                                        <span class="label-txt">文字标签</span> <span
-                                                                class="label-txt">文字标签</span> <span class="label-txt">文字标签</span>
-                                                        <span class="label-txt">文字标签</span> <span
-                                                                class="label-txt">文字标签</span> <span class="label-txt">文字标签</span>
+                                                        {% for label in labels %}
+                                                            <span>
+                                                            <input type="checkbox" value="{{ label.id }}" name="labelname" />{{ label.name }}
+                                                            </span>
+                                                        {% endfor %}
                                                     </li>
+
                                                 </ul>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">项目名称</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control">
+                                                <input type="text" class="form-control" name="p_name">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">一句话简介</label>
                                             <div class="col-sm-10">
-                                                <textarea class="form-control" rows="5"></textarea>
+                                                <textarea class="form-control" rows="5" name="p_desc"></textarea>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">筹资金额（元）</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" style="width:100px;">
+                                                <input type="text" class="form-control" style="width:100px;"
+                                                       name="p_money">
                                                 <label class="control-label">筹资金额不能低于100元,不能高于1000000000元</label>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">筹资天数（天）</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" style="width:100px;">
+                                                <input type="text" class="form-control" style="width:100px;"
+                                                       name="p_time">
                                                 <label class="control-label">一般10-90天，建议30天</label>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">项目头图</label>
                                             <div class="col-sm-10">
-                                                <button type="button" class="btn btn-primary btn-lg active">上传图片
-                                                </button>
+                                                <input type="file" class="btn btn-primary btn-lg active" value="上传图片"
+                                                       name="image_title">
                                                 <label class="control-label">图片上无文字,支持jpg、jpeg、png、gif格式，大小不超过2M，建议尺寸：740*457px</label>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">项目详情</label>
                                             <div class="col-sm-10">
-                                                <button type="button" class="btn btn-primary btn-lg active">上传图片
-                                                </button>
+                                                <input type="file" class="btn btn-primary btn-lg active" value="上传图片"
+                                                       name="image_detail">
                                                 <label class="control-label">支持jpg、jpeg、png、gif格式，大小不超过2M，建议尺寸：宽740px</label>
                                             </div>
                                         </div>
-                                    </form>
-                                </div>
-                                <div class="col-md-12 column">
-                                    <div class="page-header" style="    border-bottom-style: dashed;">
-                                        <h3>
-                                            发起人信息
-                                        </h3>
-                                    </div>
-                                    <form class="form-horizontal">
+                                        <div class="page-header" style="    border-bottom-style: dashed;">
+                                            <h3>发起人信息</h3>
+                                        </div>
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">自我介绍</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" placeholder="一句话自我介绍，不超过40字">
+                                                <input type="text" class="form-control" placeholder="一句话自我介绍，不超过40字"
+                                                       name="u_name">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">详细自我介绍</label>
                                             <div class="col-sm-10">
-                                                <textarea class="form-control" rows="5"
+                                                <textarea class="form-control" rows="5" name="u_desc"
                                                           placeholder="向支持者详细介绍你自己或你的团队及项目背景，让支持者在最短时间内了解你，不超过160字"></textarea>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">联系电话</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" placeholder="此信息不会显示在项目页面">
+                                                <input type="text" class="form-control" placeholder="此信息不会显示在项目页面"
+                                                       name="u_phone">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">客服电话</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" placeholder="此信息显示在项目页面">
+                                                <input type="text" class="form-control" placeholder="此信息显示在项目页面"
+                                                       name="u_c_phone">
                                             </div>
                                         </div>
+                                        <br>
+                                        <div class="panel-footer" style="text-align:center;">
+                                            <input type="submit" class="btn  btn-warning btn-lg"
+                                                   value="下一步" id="btn">
+                                        </div>
+                                        <input type='hidden' name='csrfmiddlewaretoken'
+                                               value='JYLuFCOHhuV7Z1FAUmTY7qgq21jTCGtgPgDOwLRmh8D2ZL5uD0zJYtkcIgoapCsp'/>
+                                        {% csrf_token %}
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="panel-footer" style="text-align:center;">
-                        <button type="button" class="btn  btn-warning btn-lg"
-                                onclick="window.location.href='start-step-2.html'">下一步
-                        </button>
-                    </div>
+
                 </div>
             </div>
         </div>
     </div>
 
 {% endblock content %}
+{% block extra_js %}
+    <script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>
+{#    <script>#}
+{#        $(function () {#}
+            {#$('#btn').on('click',function () {#}
+            {#    var tag = $("input[name='inlineRadioOptions']:checked").val();#}
+            {#alert(tag)；#}
+            {#    var p_name = $("#p_name").val();#}
+            {#    var p_desc = $("#p_desc").val();#}
+            {#    var p_money = $("#p_money").val();#}
+            {#    var p_time = $("#p_time").val();#}
+            {#var image_title = $("#image_title")[0].files[0];#}
+            {#alert(image_title);#}
+            {#var image_detail = $("#image_detail")[0].files[0];#}
+            {##}
+            {#    var u_name = $("#u_name").val();#}
+            {#    var u_phone = $("#u_phone").val();#}
+            {#    var u_c_phone = $("#u_c_phone").val();#}
+            {#    var u_desc = $("#u_desc").val();#}
+            {#    $.ajax({#}
+            {#        cache:false,#}
+            {#        url: {% url 'users:ini2' %},#}
+            {#        async: true,#}
+            {#        type:'POST',#}
+            {#        data: {#}
+            {#            'tag':tag,#}
+            {#            'p_name':p_name,#}
+            {#            'p_desc':p_desc,#}
+            {#            'p_money':p_money,#}
+            {#            'p_time':p_time,#}
+            {#            'u_name':u_name,#}
+            {#            'u_phone':u_phone,#}
+            {#            'u_c_phone':u_c_phone,#}
+            {#            'u_desc':u_desc,#}
+            {#'image_title':image_title,#}
+            {#'image_detail':image_detail,#}
+            {#        },#}
+            {#        beforeSend:function (xhr,setting) {#}
+            {#            xhr.setRequestHeader("X-CSRFToken","{{ csrf_token }}")#}
+            {#        },#}
+            {#        success:function (data) {#}
+            {#            if (data.res == 'ok'){#}
+            {#                window.location.href='{% url "users:ini3" %}'#}
+            {#            }else{#}
+            {#                window.location.reload();#}
+            {#                alert('aaa')#}
+            {#            }#}
+            {#        }#}
+            {#    })#}
+{#            //{#})#}
+{#            $("#btn").on('click', function () {#}
+{#                var form = new FormData(document.getElementById('form'));#}
+{#                $.ajax({#}
+{#                    url: "{% url 'users:ini2' %}",#}
+{#                    type: 'POST',#}
+{#                    data: form,#}
+{#                    processData: false,#}
+{#                    contentType: false,#}
+{#                    beforeSend: function (xhr, setting) {#}
+{#                        xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}")#}
+{#                    },#}
+{#                    success: function (data) {#}
+{#                        window.location.href = "{% url "users:ini3" %}"#}
+{#                    },#}
+{#                })#}
+{#            });#}
+{##}
+{#        })#}
+{#    </script>#}
+{% endblock extra_js %}
